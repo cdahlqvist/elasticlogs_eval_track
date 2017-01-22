@@ -1,0 +1,77 @@
+{
+  "short-description": "2M elasticlogs log entries",
+  "description": "This test indexes 1M documents into 2 separate indices using a single thread.",
+  "data-url": "https://s3.amazonaws.com/users.elasticsearch.org/cdahlqvist/files/logs",
+  "indices": [
+    {
+      "name": "elasticlogs_generated",
+      "types": [
+        {
+          "name": "type",
+          "mapping": "mappings.json",
+          "documents": "generated_elasticlogs_1M.txt.gz",
+          "document-count": 1000000,
+          "compressed-bytes": 69750825,
+          "uncompressed-bytes": 782242189
+        }
+      ]
+    },
+    {
+      "name": "elasticlogs_live",
+      "types": [
+        {
+          "name": "type",
+          "mapping": "mappings.json",
+          "documents": "live_elasticlogs_1M.txt.gz",
+          "document-count": 1000000,
+          "compressed-bytes": 63591094,
+          "uncompressed-bytes": 854280705
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "name": "index-generated",
+      "operation-type": "index",
+      "index": "elasticlogs_generated",
+      "bulk-size": 1000
+    },
+    {
+      "name": "index-live",
+      "operation-type": "index",
+      "index": "elasticlogs_live",
+      "bulk-size": 1000
+    },
+    {
+      "name": "force-merge",
+      "operation-type": "force-merge"
+    },
+    {
+      "name": "index-stats",
+      "operation-type": "index-stats"
+    }
+  ],
+  "challenges": [
+    {
+      "name": "append-no-conflicts",
+      "description": "Indexes the whole document corpus using Elasticsearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Rally will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
+      "index-settings": {
+        "index.number_of_shards": 1,
+        "index.number_of_replicas": 0
+      },
+      "schedule": [
+        {
+          "operation": "index-generated",
+          "warmup-time-period": 0,
+          "clients": 1
+        },
+        {
+          "operation": "index-live",
+          "warmup-time-period": 0,
+          "clients": 1
+        }
+      ]
+    }
+  ]
+}
