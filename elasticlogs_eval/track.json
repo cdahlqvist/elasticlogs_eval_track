@@ -9,9 +9,9 @@
         {
           "name": "type",
           "mapping": "mappings.json",
-          "documents": "generated_elasticlogs_1M.txt.gz",
+          "documents": "generated_elasticlogs_1M.txt.bz2",
           "document-count": 1000000,
-          "compressed-bytes": 69750825,
+          "compressed-bytes": 35044983,
           "uncompressed-bytes": 782242189
         }
       ]
@@ -22,9 +22,9 @@
         {
           "name": "type",
           "mapping": "mappings.json",
-          "documents": "live_elasticlogs_1M.txt.gz",
+          "documents": "live_elasticlogs_1M.txt.bz2",
           "document-count": 1000000,
-          "compressed-bytes": 63591094,
+          "compressed-bytes": 33143560,
           "uncompressed-bytes": 854280705
         }
       ]
